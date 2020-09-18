@@ -92,7 +92,7 @@ class _TokopediaState extends State<Tokopedia> with TickerProviderStateMixin {
       // delay animation to start animate only after scrolling 
       // as far as startAnimationAfterOffset value
       // this is for a smoother effect
-      if(_scrollController.offset > startAnimationAfterOffset) 
+      if(_scrollController.offset >= startAnimationAfterOffset) 
       {
         double offset = _scrollController.offset - startAnimationAfterOffset;
 
