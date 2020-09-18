@@ -39,14 +39,14 @@ class _TokopediaState extends State<Tokopedia> with TickerProviderStateMixin {
   double get _appBarPaddingTop => _systemBarHeight + _appBarPaddingVertical;
   double get _appBarPaddingBottom => _appBarPaddingVertical;
 
-  Color _appbarBackgroundColor = Colors.white.withOpacity(0.0);
-  Color _appbarBackgroundColorScroll = Colors.white;
+  Color _appbarBackgroundColorBegin = Colors.white.withOpacity(0.0);
+  Color _appbarBackgroundColorEnd = Colors.white;
 
-  Color _inputBackgroundColor = Colors.white.withOpacity(0.92);
-  Color _inputBackgroundColorScroll = Color(0xFFEFEFEF);
+  Color _inputBackgroundColorBegin = Colors.white.withOpacity(0.92);
+  Color _inputBackgroundColorEnd = Color(0xFFEFEFEF);
 
-  Color _iconColor = Colors.white.withOpacity(0.92);
-  Color _iconColorScroll = Colors.grey;
+  Color _iconColorBegin = Colors.white.withOpacity(0.92);
+  Color _iconColorEnd = Colors.grey;
 
   @override
   void initState() {
@@ -57,22 +57,22 @@ class _TokopediaState extends State<Tokopedia> with TickerProviderStateMixin {
 
   _initAnimation() {
     _animationBackground = CurvedAnimationController<Color>.tween(
-      ColorTween(begin: _appbarBackgroundColor, end: _appbarBackgroundColorScroll), 
-      Duration(milliseconds: 500),
+      ColorTween(begin: _appbarBackgroundColorBegin, end: _appbarBackgroundColorEnd), 
+      Duration(milliseconds: 300),
       curve: Curves.ease,
       vsync: this,
     );
 
     _animationInput = CurvedAnimationController<Color>.tween(
-      ColorTween(begin: _inputBackgroundColor, end: _inputBackgroundColorScroll), 
-      Duration(milliseconds: 500),
+      ColorTween(begin: _inputBackgroundColorBegin, end: _inputBackgroundColorEnd), 
+      Duration(milliseconds: 300),
       curve: Curves.ease,
       vsync: this,
     );
 
     _animationIcon = CurvedAnimationController<Color>.tween(
-      ColorTween(begin: _iconColor, end: _iconColorScroll), 
-      Duration(milliseconds: 500),
+      ColorTween(begin: _iconColorBegin, end: _iconColorEnd), 
+      Duration(milliseconds: 300),
       curve: Curves.ease,
       vsync: this,
     );
@@ -84,13 +84,22 @@ class _TokopediaState extends State<Tokopedia> with TickerProviderStateMixin {
 
   _initScroll() {
     _scrollController.addListener(() {
+      double startAnimationAfterOffset = kToolbarHeight;
       double scrollOffsetBackground = 200;
-      double scrollOffsetInput = 240;
-      double scrollOffsetIcon = 180;
+      double scrollOffsetInput = 200;
+      double scrollOffsetIcon = 150;
 
-      _animationBackground.progress = (_scrollController.offset / scrollOffsetBackground);
-      _animationInput.progress = (_scrollController.offset / scrollOffsetInput);
-      _animationIcon.progress = (_scrollController.offset / scrollOffsetIcon);
+      // delay animation to start animate only after scrolling 
+      // as far as startAnimationAfterOffset value
+      // this is for a smoother effect
+      if(_scrollController.offset > startAnimationAfterOffset) 
+      {
+        double offset = _scrollController.offset - startAnimationAfterOffset;
+
+        _animationBackground.progress = (offset / scrollOffsetBackground);
+        _animationInput.progress = (offset / scrollOffsetInput);
+        _animationIcon.progress = (offset / scrollOffsetIcon);
+      }
     });
   }
 
