@@ -88,18 +88,30 @@ class _TokopediaState extends State<Tokopedia> with TickerProviderStateMixin {
       double scrollOffsetBackground = 150;
       double scrollOffsetInput = 150;
       double scrollOffsetIcon = 120;
-
+      
       // delay animation to start animate only after scrolling 
       // as far as startAnimationAfterOffset value
       // this is for a smoother effect
-      if(_scrollController.offset >= startAnimationAfterOffset) 
-      {
-        double offset = _scrollController.offset - startAnimationAfterOffset;
+      double offset = _scrollController.offset - startAnimationAfterOffset;
+      double progressBackground = offset / scrollOffsetBackground;
+      double progressInput = offset / scrollOffsetInput;
+      double progressIcon = offset / scrollOffsetIcon;
 
-        _animationBackground.progress = (offset / scrollOffsetBackground);
-        _animationInput.progress = (offset / scrollOffsetInput);
-        _animationIcon.progress = (offset / scrollOffsetIcon);
-      }
+      // make sure progress animation always between 0.0 and 1.0
+      progressBackground = progressBackground <= 0.0 ? 0.0 : progressBackground;
+      progressBackground = progressBackground >= 1.0 ? 1.0 : progressBackground;
+
+      // make sure progress animation always between 0.0 and 1.0
+      progressInput = progressInput <= 0.0 ? 0.0 : progressInput;
+      progressInput = progressInput >= 1.0 ? 1.0 : progressInput;
+
+      // make sure progress animation always between 0.0 and 1.0
+      progressIcon = progressIcon <= 0.0 ? 0.0 : progressIcon;
+      progressIcon = progressIcon >= 1.0 ? 1.0 : progressIcon;
+      
+      _animationBackground.progress = progressBackground;
+      _animationInput.progress = progressInput;
+      _animationIcon.progress = progressIcon;
     });
   }
 
