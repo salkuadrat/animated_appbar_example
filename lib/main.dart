@@ -84,10 +84,10 @@ class _TokopediaState extends State<Tokopedia> with TickerProviderStateMixin {
 
   _initScroll() {
     _scrollController.addListener(() {
-      double startAnimationAfterOffset = kToolbarHeight;
-      double scrollOffsetBackground = 200;
-      double scrollOffsetInput = 200;
-      double scrollOffsetIcon = 150;
+      double startAnimationAfterOffset = 75;
+      double scrollOffsetBackground = 150;
+      double scrollOffsetInput = 150;
+      double scrollOffsetIcon = 120;
 
       // delay animation to start animate only after scrolling 
       // as far as startAnimationAfterOffset value
@@ -141,11 +141,11 @@ class _TokopediaState extends State<Tokopedia> with TickerProviderStateMixin {
           onPressed: (){},
         ),
         IconButton(
-          icon: Icon(Icons.notifications_active, color: _animationIcon.value), 
+          icon: Icon(Icons.mail, color: _animationIcon.value), 
           onPressed: (){},
         ),
         IconButton(
-          icon: Icon(Icons.add_shopping_cart, color: _animationIcon.value), 
+          icon: Icon(Icons.notifications_active, color: _animationIcon.value), 
           onPressed: (){},
         ),
       ],
