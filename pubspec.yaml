@@ -24,7 +24,7 @@ dependencies:
   flutter:
     sdk: flutter
   
-  curved_animation_controller: ^1.0.0
+  curved_animation_controller: ^1.0.1
 
 dev_dependencies:
   flutter_test:
