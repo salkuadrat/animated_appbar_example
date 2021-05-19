@@ -27,11 +27,11 @@ class Tokopedia extends StatefulWidget {
 }
 
 class _TokopediaState extends State<Tokopedia> with TickerProviderStateMixin {
-
   ScrollController _scrollController = ScrollController();
-  CurvedAnimationController<Color> _animationBackground;
-  CurvedAnimationController<Color> _animationInput;
-  CurvedAnimationController<Color> _animationIcon;
+
+  late CurvedAnimationController<Color> _animationBackground;
+  late CurvedAnimationController<Color> _animationInput;
+  late CurvedAnimationController<Color> _animationIcon;
 
   double get _systemBarHeight => MediaQuery.of(context).padding.top;
   double get _appBarHeight => kToolbarHeight + _systemBarHeight;
@@ -57,29 +57,31 @@ class _TokopediaState extends State<Tokopedia> with TickerProviderStateMixin {
 
   _initAnimation() {
     _animationBackground = CurvedAnimationController<Color>.tween(
-      ColorTween(begin: _appbarBackgroundColorBegin, end: _appbarBackgroundColorEnd), 
+      ColorTween(
+          begin: _appbarBackgroundColorBegin, end: _appbarBackgroundColorEnd),
       Duration(milliseconds: 300),
       curve: Curves.ease,
       vsync: this,
     );
 
     _animationInput = CurvedAnimationController<Color>.tween(
-      ColorTween(begin: _inputBackgroundColorBegin, end: _inputBackgroundColorEnd), 
+      ColorTween(
+          begin: _inputBackgroundColorBegin, end: _inputBackgroundColorEnd),
       Duration(milliseconds: 300),
       curve: Curves.ease,
       vsync: this,
     );
 
     _animationIcon = CurvedAnimationController<Color>.tween(
-      ColorTween(begin: _iconColorBegin, end: _iconColorEnd), 
+      ColorTween(begin: _iconColorBegin, end: _iconColorEnd),
       Duration(milliseconds: 300),
       curve: Curves.ease,
       vsync: this,
     );
 
-    _animationBackground.addListener(() => setState((){}));
-    _animationInput.addListener(() => setState((){}));
-    _animationIcon.addListener(() => setState((){}));
+    _animationBackground.addListener(() => setState(() {}));
+    _animationInput.addListener(() => setState(() {}));
+    _animationIcon.addListener(() => setState(() {}));
   }
 
   _initScroll() {
@@ -88,8 +90,8 @@ class _TokopediaState extends State<Tokopedia> with TickerProviderStateMixin {
       double scrollOffsetBackground = 150;
       double scrollOffsetInput = 150;
       double scrollOffsetIcon = 120;
-      
-      // delay animation to start animate only after scrolling 
+
+      // delay animation to start animate only after scrolling
       // as far as startAnimationAfterOffset value
       // this is for a smoother effect
       double offset = _scrollController.offset - startAnimationAfterOffset;
@@ -108,7 +110,7 @@ class _TokopediaState extends State<Tokopedia> with TickerProviderStateMixin {
       // make sure progress animation always between 0.0 and 1.0
       progressIcon = progressIcon <= 0.0 ? 0.0 : progressIcon;
       progressIcon = progressIcon >= 1.0 ? 1.0 : progressIcon;
-      
+
       _animationBackground.progress = progressBackground;
       _animationInput.progress = progressInput;
       _animationIcon.progress = progressIcon;
@@ -116,105 +118,106 @@ class _TokopediaState extends State<Tokopedia> with TickerProviderStateMixin {
   }
 
   Widget get _appbar => Container(
-    height: _appBarHeight,
-    padding: EdgeInsets.only(
-      top: _appBarPaddingTop,
-      bottom: _appBarPaddingBottom,
-    ),
-    color: _animationBackground.value,
-    child: Row(
-      children: [
-        SizedBox(width: 15),
-        Expanded(
-          child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 0),
-            decoration: BoxDecoration(
-              color: _animationInput.value,
-              borderRadius: BorderRadius.circular(4.0),
-            ),
-            child: TextField(
-              textInputAction: TextInputAction.search,
-              decoration: InputDecoration(
-                prefixIcon: Icon(Icons.search, color: Colors.grey),
-                border: InputBorder.none,
-                hintText: 'Search...',
-                hintStyle: TextStyle(
-                  color: Colors.black38, 
-                  fontSize: 14,
+        height: _appBarHeight,
+        padding: EdgeInsets.only(
+          top: _appBarPaddingTop,
+          bottom: _appBarPaddingBottom,
+        ),
+        color: _animationBackground.value,
+        child: Row(
+          children: [
+            SizedBox(width: 15),
+            Expanded(
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 0),
+                decoration: BoxDecoration(
+                  color: _animationInput.value,
+                  borderRadius: BorderRadius.circular(4.0),
+                ),
+                child: TextField(
+                  textInputAction: TextInputAction.search,
+                  decoration: InputDecoration(
+                    prefixIcon: Icon(
+                      Icons.search,
+                      color: Colors.grey,
+                    ),
+                    border: InputBorder.none,
+                    hintText: 'Search...',
+                    hintStyle: TextStyle(
+                      color: Colors.black38,
+                      fontSize: 14,
+                    ),
+                  ),
+                  style: TextStyle(color: Colors.black54, fontSize: 14),
                 ),
               ),
-              style: TextStyle(color: Colors.black54, fontSize: 14),
             ),
-          ),
+            SizedBox(width: 13),
+            IconButton(
+              icon: Icon(Icons.favorite, color: _animationIcon.value),
+              onPressed: () {},
+            ),
+            IconButton(
+              icon: Icon(Icons.mail, color: _animationIcon.value),
+              onPressed: () {},
+            ),
+            IconButton(
+              icon:
+                  Icon(Icons.notifications_active, color: _animationIcon.value),
+              onPressed: () {},
+            ),
+          ],
         ),
-        SizedBox(width: 13),
-        IconButton(
-          icon: Icon(Icons.favorite, color: _animationIcon.value), 
-          onPressed: (){},
-        ),
-        IconButton(
-          icon: Icon(Icons.mail, color: _animationIcon.value), 
-          onPressed: (){},
-        ),
-        IconButton(
-          icon: Icon(Icons.notifications_active, color: _animationIcon.value), 
-          onPressed: (){},
-        ),
-      ],
-    ),
-  );
+      );
 
   Widget get _content => SingleChildScrollView(
-    controller: _scrollController,
-    child: Column(
-      children: [
-        Container(
-          height: 300,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              stops: [0.0, 1.0],
-              colors: [
-                Color(0xFF000046),
-                Color(0xFF1CB5E0)
-              ],
+        controller: _scrollController,
+        child: Column(
+          children: [
+            Container(
+              height: 300,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  stops: [0.0, 1.0],
+                  colors: [Color(0xFF000046), Color(0xFF1CB5E0)],
+                ),
+              ),
             ),
-          ),
+            Container(height: 1, color: Color(0xFF000046)),
+            Container(height: 1200, color: Color(0xFFEEEEEE)),
+          ],
         ),
-        Container(height: 1, color: Color(0xFF000046)),
-        Container(height: 1200, color: Color(0xFFEEEEEE)),
-      ],
-    ),
-  );
+      );
 
   Widget get _navbar => BottomNavigationBar(
-    selectedItemColor: Colors.black87,
-    unselectedItemColor: Colors.black45,
-    showUnselectedLabels: true,
-    iconSize: 25,
-    selectedFontSize: 12,
-    unselectedFontSize: 12,
-    currentIndex: 0,
-    items: [
-      BottomNavigationBarItem(
-        icon: Icon(Icons.home),
-        title: Text('Home'),
-      ),
-      BottomNavigationBarItem(
-        icon: Icon(Icons.favorite_border),
-        title: Text('Loved'),
-      ),
-      BottomNavigationBarItem(
-        icon: Icon(Icons.person_outline),
-        title: Text('Account'),
-      ),
-      BottomNavigationBarItem(
-        icon: Icon(Icons.search),
-        title: Text('Search'),
-      ),
-    ],
-  );
+        selectedItemColor: Colors.black87,
+        unselectedItemColor: Colors.black45,
+        showUnselectedLabels: true,
+        iconSize: 25,
+        selectedFontSize: 12,
+        unselectedFontSize: 12,
+        currentIndex: 0,
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.favorite_border),
+            label: 'Loved',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person_outline),
+            label: 'Account',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.search),
+            label: 'Search',
+          ),
+        ],
+      );
 
   @override
   Widget build(BuildContext context) {
